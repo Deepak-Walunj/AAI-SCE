@@ -1,0 +1,7 @@
+{
+    "python.defaultInterpreterPath": "C:\\Users\\Deepak\\anaconda3\\envs\\aaienv\\python.exe",
+    "terminal.integrated.env.windows": {
+        "CONDA_DEFAULT_ENV": "aaienv"
+    },
+    "python.terminal.activateEnvironment": true
+}
