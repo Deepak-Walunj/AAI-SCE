@@ -3,6 +3,7 @@ from enum import Enum
 class CollectionName(str, Enum):
     AUTH_USERS = "users" 
     CANDIDATES = "candidates"
+    ADMIN = "admin"
 
 
     @classmethod
@@ -13,4 +14,6 @@ class CollectionName(str, Enum):
     def get_by_entity_type(cls, entity_type: str) -> str:
         if entity_type == "candidate":
             return cls.CANDIDATES.value
+        elif entity_type == "admin":
+            return cls.ADMIN.value
         raise ValueError(f"Unknown entity type: {entity_type}")

@@ -22,13 +22,20 @@ class CandidateProfileFields(str, Enum):
     email = "email"
     full_name = "full_name"
     gender = "gender"
-    profile_image_url = "profile_image_url"
+    
+class AdminProfileFields(str, Enum):
+    userId = "userId"
+    email = "email"
+    full_name = "full_name"
 
 class CandidateProfile(DBModelBase):
     userId: str = Field(..., description="Reference to AuthUser.userId")
     email: EmailStr
     full_name: str
     gender: Optional[Gender] = None
-    profile_image_url: Optional[str] = None
-    batch: Optional[str] = None
+
+class AdminProfile(DBModelBase):
+    userId: str = Field(..., description="Reference to AuthUser.userId")
+    email: EmailStr
+    full_name: str
     

@@ -12,6 +12,7 @@ import uuid
 import structlog
 from app.api.auth.router import router as auth_router
 from app.api.candidate.router import router as candidate_router
+from app.api.admin.router import router as admin_router
 
 
 @asynccontextmanager
@@ -53,6 +54,7 @@ async def root():
         "available_routes": [
             f"{settings.API_PREFIX}/auth",
             f"{settings.API_PREFIX}/candidate",
+            f"{settings.API_PREFIX}/admin",
             "/health"
         ]
     }
@@ -85,6 +87,7 @@ async def add_request_id(request: Request, call_next):
 # API routes
 app.include_router(auth_router, prefix=f"{settings.API_PREFIX}/auth", tags=["auth"])
 app.include_router(candidate_router, prefix=f"{settings.API_PREFIX}", tags=["candidate"])
+app.include_router(admin_router, prefix=f"{settings.API_PREFIX}", tags=["admin"])
 
 @app.get("/health")
 async def health_check():

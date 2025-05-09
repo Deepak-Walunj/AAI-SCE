@@ -5,6 +5,7 @@ class DatabaseInitializer:
     REQUIRED_COLLECTIONS = [
         "users",  # For auth_users collection
         "candidates",  # For candidate profiles
+        "admin",
     ]
 
     @staticmethod
@@ -33,6 +34,11 @@ class DatabaseInitializer:
             # Create indexes for candidates collection
             await collection.create_index("userId", unique=True)
             await collection.create_index("email")
+        elif collection_name == "admin":
+            # Create indexes for admin collection
+            await collection.create_index("userId", unique=True)
+            await collection.create_index("email")
+
 
     @staticmethod
     async def check_collection_health(db: AsyncIOMotorDatabase) -> bool:

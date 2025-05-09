@@ -34,7 +34,6 @@ class CandidateService:
             email = data.email,
             full_name = data.name,
             gender = data.gender,
-            batch = data.batch
         )
         profile = await self.create_profile(candidate)
         logger.info("Candidate registered successfully.", candidate_id=profile.userId, email=data.email)
@@ -61,4 +60,4 @@ class CandidateService:
     async def delete_profile(self, user_id: str) -> None:
         profile = await self.candidate_repository.find_by_user_id(user_id)
         if profile:
-            await self.candidate_repository.delete(profile.user_id)
+            await self.candidate_repository.delete(profile.userId)

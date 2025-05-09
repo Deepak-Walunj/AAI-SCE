@@ -17,8 +17,7 @@ async def register_candidate(
     email: str = Form(..., message = "Valid email address"),
     gender: Gender = Form(..., message = "Gender (male, female, or other)"),
     password: str = Form(..., message = "Password must be at least 6 characters long", min_length = 6),
-    candidate_service: CandidateService = Depends(get_candidate_service)
-) -> CandidateProfileResponse:
+    candidate_service: CandidateService = Depends(get_candidate_service)) -> CandidateProfileResponse:
     profile = await candidate_service.register_candidate(
         CandidateProfileRegisterRequest(
             name = name,
@@ -73,4 +72,7 @@ async def delete_my_profile(
     candidate_service: CandidateService = Depends(get_candidate_service)
 ):
     await candidate_service.delete_profile(request.state.user.userId)
-    return None
+    return CandidateProfileResponse(
+        success=True,
+        message="Profile deleted successfully",
+    )

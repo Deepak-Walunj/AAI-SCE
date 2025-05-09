@@ -41,7 +41,6 @@ class CandidateProfileSchema(BaseModel):
 class CandidateProfileUpdate(BaseModel):
     email: Optional[EmailStr] = None
     full_name: Optional[str] = None
-    profile_image_url: Optional[str] = None
     gender: Optional[Gender] = None
 
     def dict_not_none(self):

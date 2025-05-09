@@ -4,6 +4,8 @@ from app.repositories.candidate import CandidateRepository
 from app.core.collections import CollectionName
 from app.services.auth import AuthService
 from app.services.candidate import CandidateService
+from app.services.admin import AdminService
+from app.repositories.admin import AdminRepository
 
 # Initialize database connection
 db = None
@@ -22,22 +24,30 @@ class DependencyStorage:
         # Create repositories
         self._auth_repo = AuthRepository(db[CollectionName.AUTH_USERS.value])
         self._candidate_repo = CandidateRepository(db[CollectionName.CANDIDATES.value])
+        self._admin_repo = AdminRepository(db[CollectionName.ADMIN.value])
         
         # Create services
         self._auth_service = AuthService(auth_repository=self._auth_repo)
         self._candidate_service = CandidateService(candidate_repository=self._candidate_repo, auth_service=self._auth_service)
+        self._admin_service = AdminService(admin_repository=self._admin_repo, auth_service=self._auth_service)
         
     def get_auth_repository(self) -> AuthRepository:
         return self._auth_repo
 
     def get_candidate_repository(self) -> CandidateRepository:
         return self._candidate_repo
+
+    def get_admin_repository(self) -> AdminRepository:
+        return self._admin_repo
     
     def get_auth_service(self) -> AuthService:
         return self._auth_service
 
     def get_candidate_service(self) -> CandidateService:
         return self._candidate_service
+
+    def get_admin_service(self) -> AdminService:
+        return self._admin_service
     
 async def initialize_dependencies():
     """Initialize all dependencies."""
@@ -56,6 +66,11 @@ def get_candidate_repository() -> CandidateRepository:
         raise RuntimeError("Dependencies not initialized")
     return dependency_storage.get_candidate_repository()
 
+def get_admin_repository() -> AdminRepository:
+    if dependency_storage is None:
+        raise RuntimeError("Dependencies not initialized")
+    return dependency_storage.get_admin_repository()
+
 def get_auth_service() -> AuthService:
     if dependency_storage is None:
         raise RuntimeError("Dependencies not initialized")
@@ -65,3 +80,8 @@ def get_candidate_service() -> CandidateService:
     if dependency_storage is None:
         raise RuntimeError("Dependencies not initialized")
     return dependency_storage.get_candidate_service()
+
+def get_admin_service() -> AdminService:
+    if dependency_storage is None:
+        raise RuntimeError("Dependencies not initialized")
+    return dependency_storage.get_admin_service()
