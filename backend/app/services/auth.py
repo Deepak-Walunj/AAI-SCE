@@ -40,6 +40,12 @@ class AuthService:
     async def get_user_by_id(self, user_id: str) -> Optional[AuthUser]:
         """Get user by user_id."""
         return await self.auth_repository.find_by_user_id(user_id)
+    
+    async def delete_user_by_userId(self, user_id: str) -> None:
+        return await self.auth_repository.delete_by_user_id(user_id)
+    
+    async def update_user(self, user_id: str, data: Dict) -> Optional[AuthUser]:
+        return await self.auth_repository.update(user_id, data)
 
     async def create_tokens(self, user: AuthUser) -> Tuple[str, str]:
         data = {

@@ -1,6 +1,7 @@
 from typing import Optional, Generic, TypeVar
 from pydantic import BaseModel, EmailStr
 from ..models.user import EntityType
+from app.core.enums import Gender
 
 T = TypeVar('T')
 
@@ -32,3 +33,11 @@ class TokenResponse(BaseResponse[TokenData]):
 
 class UserResponse(BaseResponse[UserData]):
     data: UserData
+    
+class AuthProfileUpdate(BaseModel):
+    email: Optional[EmailStr] = None
+    full_name: Optional[str] = None
+    gender: Optional[Gender] = None
+
+    def dict_not_none(self):
+        return {k: v for k, v in self.model_dump().items() if v is not None}

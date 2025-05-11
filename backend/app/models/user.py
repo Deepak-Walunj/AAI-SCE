@@ -33,6 +33,12 @@ class CandidateProfile(DBModelBase):
     email: EmailStr
     full_name: str
     gender: Optional[Gender] = None
+    
+class AuthProfile(DBModelBase):
+    userId: str = Field(..., description="Reference to AuthUser.userId")
+    email: EmailStr
+    hashed_password: Optional[str] = None
+    entity_type: Optional[str] = None
 
 class AdminProfile(DBModelBase):
     userId: str = Field(..., description="Reference to AuthUser.userId")

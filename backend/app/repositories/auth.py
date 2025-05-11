@@ -2,8 +2,9 @@ from typing import Optional
 from motor.motor_asyncio import AsyncIOMotorCollection
 from app.core.logging import get_logger
 from app.models.user import AuthUser
-from app.core.exceptions import DuplicateRequestException
-
+from app.core.exceptions import DuplicateRequestException, NotFoundException
+from app.schemas.auth import AuthProfileUpdate
+from app.models.user import AuthProfile
 logger = get_logger(__name__)
 
 class AuthRepository:
@@ -47,3 +48,22 @@ class AuthRepository:
             return AuthUser(**user_dict)
         logger.info("User not found", user_id=user_id)
         return None
+    
+    async def delete_by_user_id(self, user_id: str) -> None:
+        logger.info("Deleting user by ID", user_id=user_id)
+        result = await self.collection.delete_one({"userId": user_id})
+        if result.deleted_count == 0:
+            raise NotFoundException(message="User not found", details={"user_id": user_id})
+        else:
+            logger.info("User deleted successfully", user_id=user_id)
+
+    async def update(self, user_id: str, data: AuthProfileUpdate) -> AuthProfile:
+        update_data = data.dict_not_none()
+        result = await self.collection.find_one_and_update(
+            {"userId": user_id},
+            {"$set": update_data},
+            return_document=True
+        )
+        if not result:
+            raise NotFoundException(f"Candidate profile with userId {user_id} not found")
+        return AuthProfile(**result)

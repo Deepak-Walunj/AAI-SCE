@@ -57,11 +57,10 @@ async def update_my_profile(
     data: CandidateProfileUpdate,
     candidate_service: CandidateService = Depends(get_candidate_service)
 ) -> CandidateProfileResponse:
-    profile = await candidate_service.update_profile(request.state.user.userId, data)
+    await candidate_service.update_profile(request.state.user.userId, data)
     return CandidateProfileResponse(
         success=True,
         message="Profile updated successfully",
-        data=profile.model_dump()
     )
     
 

@@ -9,6 +9,7 @@ from app.schemas.admin import (
 from app.schemas.auth import UserRegisterRequest
 from app.core.enums import EntityType
 from app.core.logging import get_logger
+from app.core.exceptions import NotFoundException
 
 logger = get_logger(__name__)
 
@@ -43,3 +44,6 @@ class AdminService:
         profile = await self.admin_repository.find_by_user_id(user_id)
         if profile:
             await self.admin_repository.delete(profile.userId)
+            await self.auth_service.delete_user_by_userId(user_id)
+        else:
+            raise NotFoundException(message="Profile not found", details={"user_id": user_id})

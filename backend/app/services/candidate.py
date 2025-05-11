@@ -11,7 +11,7 @@ from app.schemas.candidate import (
 from app.schemas.auth import UserRegisterRequest
 from app.core.enums import EntityType
 from app.core.logging import get_logger
-
+from app.core.exceptions import NotFoundException
 logger = get_logger(__name__)
 
 class CandidateService:
@@ -55,9 +55,17 @@ class CandidateService:
             )
     
     async def update_profile(self, user_id: str, data: CandidateProfileUpdate) -> CandidateProfile:
-        return await self.candidate_repository.update(user_id, data)
+        profile = await self.candidate_repository.find_by_user_id(user_id)
+        if profile:
+            await self.candidate_repository.update(user_id, data)
+            await self.auth_service.update_user(user_id, data)
+        else:
+            raise NotFoundException(message="Profile not found", details={"user_id": user_id}) 
     
     async def delete_profile(self, user_id: str) -> None:
         profile = await self.candidate_repository.find_by_user_id(user_id)
         if profile:
             await self.candidate_repository.delete(profile.userId)
+            await self.auth_service.delete_user_by_userId(user_id)
+        else:
+            raise NotFoundException(message="Profile not found", details={"user_id": user_id})
