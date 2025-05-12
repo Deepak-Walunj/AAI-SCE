@@ -13,10 +13,10 @@ logger = get_logger(__name__)
 @router.post("/register", response_model=CandidateProfileResponse)
 async def register_candidate(
     request: Request,
-    name: str = Form(..., message = "Full name of the user"),
-    email: str = Form(..., message = "Valid email address"),
-    gender: Gender = Form(..., message = "Gender (male, female, or other)"),
-    password: str = Form(..., message = "Password must be at least 6 characters long", min_length = 6),
+    name: str = Form(...),
+    email: str = Form(...),
+    gender: Gender = Form(...),
+    password: str = Form(..., min_length=6),
     candidate_service: CandidateService = Depends(get_candidate_service)) -> CandidateProfileResponse:
     profile = await candidate_service.register_candidate(
         CandidateProfileRegisterRequest(
