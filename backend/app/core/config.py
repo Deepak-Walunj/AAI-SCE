@@ -24,7 +24,7 @@ class Settings(BaseSettings):
     USE_COOKIE_AUTH: bool = Field(default=False, env="USE_COOKIE_AUTH")
     
     # CORS
-    ALLOWED_ORIGINS: List[str] = ["http://localhost:3000"]
+    ALLOWED_ORIGINS: List[str] = ["http://localhost:5173"]
         
     # Logging
     LOG_LEVEL: str = "INFO"
