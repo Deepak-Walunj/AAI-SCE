@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import axios from 'axios';
-
+import { useNavigate } from 'react-router-dom';
+import {toast} from 'react-toastify';
 const UserRegisterationPage = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -26,18 +28,19 @@ const UserRegisterationPage = () => {
       form.append("password", formData.password);
 
       const response = await axios.post('http://127.0.0.1:8000/api/candidate/register', form);
-      alert('Registration successful'+ response.data.message);
-      console.log(response.data.data);
+      toast.success('Registration successful'+ response.data.message);
+      // console.log(response.data.data);
+      navigate('/login');
     } catch (error) {
       if (error.response) {
         // Server responded with a status outside 2xx
-        alert("❌ Error: " + (error.response.data.detail || error.response.data.message));
+        toast.error("❌ Error: " + (error.response.data.detail || error.response.data.message));
       } else if (error.request) {
         // Request was made but no response received
-        alert("❌ No response from server.");
+        toast.error("❌ No response from server.");
       } else {
         // Something else
-        alert("❌ Error: " + error.message);
+        toast.error("❌ Error: " + error.message);
       }
     }
   };

@@ -1,7 +1,10 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function LoginPage({role="candidate"}){
+    const navigate=useNavigate()
     const [formData, setFormData]=useState({
         username:"",
         password:"",
@@ -27,19 +30,29 @@ function LoginPage({role="candidate"}){
             const response = await axios.post("http://127.0.0.1:8000/api/auth/login", loginPayload, {
                 withCredentials: true, 
             });
-            const  {access_token}=response.data.data;
+            const {access_token}=response.data.data;
             setToken(access_token)
             localStorage.setItem("access_token", access_token);
-            alert("✅ Login successful!");
-        }catch(error){
-            if (error.response){
-                alert("❌ " + error.response.data.detail);
+            toast.success("✅ Login successful!");
+            if (role==="candidate"){
+                navigate('/candidate/dashboard')
             }
-            else if (error.request){
-                alert("❌ No response from server.");
+            else if (role==="company_admin"){
+                navigate('/admin/dashboard')
             }
             else{
-                alert("❌ Error: " + error.message);
+                toast.error("❌ Invalid role");
+            }
+            
+        }catch(error){
+            if (error.response){
+                toast.error("❌ " + error.response.data.detail);
+            }
+            else if (error.request){
+                toast.error("❌ No response from server.");
+            }
+            else{
+                toast.error("❌ Error: " + error.message);
             }
         }
         }
