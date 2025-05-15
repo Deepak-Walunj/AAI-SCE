@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import './CandidateDashboard.css'
 import { toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
 
 export default function CandidateDashboard() {
+    const navigate= useNavigate();
     const [profile, setProfile] = useState(null);
     const [editing, setEditing] = useState(false);
     const [updatedData, setUpdatedData] = useState({});
@@ -76,70 +78,76 @@ export default function CandidateDashboard() {
 
     return (
         <div className="dashboard-container">
-            <aside className="sidebar">
-                <button
-                    onClick={() => {
-                    fetchProfile();
-                    setEditing(false);
-                    }}
-                >
-                    View Details
-                </button>
-                <button onClick={() => setEditing(true)}>Update Details</button>
-                <button
-                    onClick={() => {
-                    logout();
-                    setEditing(false);
-                    }}
-                >
-                    Logout
-                </button>
-                <button
-                    onClick={() => {
-                    deleteProfile();
-                    setEditing(false);
-                    }}
-                    style={{ color: "red" }}
-                >
-                    Delete Account
-                </button>
-            </aside>
-            <main className="main-content">
-                <h1>Candidate Dashboard</h1>
-                {editing ? (
-                <div>
-                    <h2>Update Details</h2>
-                    {profile &&
-                    DISPLAY_FIELDS.map((field) => (
-                        <div key={field}>
-                            <label>{FIELD_LABELS[field] || field}</label>
-                            {field === "gender" ? (
-                                <select name="gender" value={updatedData.gender } onChange={handleInputChange}>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            ):(
-                            <input name={field} value={updatedData[field] || ""} onChange={handleInputChange}/>
-                            )}
-                        </div>
-                    ))}
-                    <button onClick={updateProfile}>Save</button>
-                    <button onClick={() => setEditing(false)}>Cancel</button>
-                </div>
-                ) : (
-                profile && (
+            <h1>Candidate Dashboard</h1>
+            <div className="sidebar_maincontent">
+                <aside className="sidebar">
+                    <button
+                        onClick={() => {
+                        fetchProfile();
+                        setEditing(false);
+                        }}
+                    >
+                        View Details
+                    </button>
+                    <button onClick={() => setEditing(true)}>Update Details</button>
+                    <button onClick={() => navigate("/candidate/process")} >
+                        Assistance
+                    </button>
+                    <button
+                        onClick={() => {
+                        logout();
+                        setEditing(false);
+                        }}
+                    >
+                        Logout
+                    </button>
+                    <button
+                        onClick={() => {
+                        deleteProfile();
+                        setEditing(false);
+                        }}
+                        style={{ color: "red" }}
+                    >
+                        Delete Account
+                    </button>
+                </aside>
+                <div className="main-content">
+                    
+                    {editing ? (
                     <div>
-                        <h2>Profile Details</h2>
-                        {DISPLAY_FIELDS.map((field) => (
-                            <p key={field}>
-                            <strong>{FIELD_LABELS[field] || field}:</strong> {profile[field]}
-                            </p>
+                        <h2>Update Details</h2>
+                        {profile &&
+                        DISPLAY_FIELDS.map((field) => (
+                            <div key={field}>
+                                <label>{FIELD_LABELS[field] || field}</label>
+                                {field === "gender" ? (
+                                    <select name="gender" value={updatedData.gender } onChange={handleInputChange}>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                ):(
+                                <input name={field} value={updatedData[field] || ""} onChange={handleInputChange}/>
+                                )}
+                            </div>
                         ))}
+                        <button onClick={updateProfile}>Save</button>
+                        <button onClick={() => setEditing(false)}>Cancel</button>
                     </div>
-                )
-                )}
-            </main>
+                    ) : (
+                    profile && (
+                        <div>
+                            <h2>Profile Details</h2>
+                            {DISPLAY_FIELDS.map((field) => (
+                                <p key={field}>
+                                <strong>{FIELD_LABELS[field] || field}:</strong> {profile[field]}
+                                </p>
+                            ))}
+                        </div>
+                    )
+                    )}
+                </div>
+            </div>
     </div>
 );
 }

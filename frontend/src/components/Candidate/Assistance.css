@@ -1,0 +1,103 @@
+/* Assistant.css */
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f4f6f8;
+  margin: 0;
+  padding: 0;
+}
+
+.main-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 40px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.heading {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #222;
+  margin-bottom: 32px;
+  font-weight: 700;
+}
+
+.textarea {
+  width: 100%;
+  padding: 16px;
+  font-size: 1rem;
+  resize: vertical;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 24px;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.textarea:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.dropdown {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.dropdown-select {
+  flex: 1;
+  min-width: 180px;
+  padding: 12px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.dropdown-select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.output-btn {
+  background-color: #007bff;
+  color: #fff;
+  padding: 14px 28px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: block;
+  margin: 0 auto;
+}
+
+.output-btn:hover {
+  background-color: #0056b3;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0, 123, 255, 0.3);
+}
+
+.output-container {
+  margin-top: 40px;
+  background-color: #f9fafb;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+}
+
+.output-container h2 {
+  margin-top: 0;
+  font-size: 1.4rem;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.output-container p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #444;
+}
