@@ -2,9 +2,10 @@ from motor.motor_asyncio import AsyncIOMotorCollection
 from app.models.user import CandidateProfile
 from app.core.logging import get_logger
 from typing import Optional, BinaryIO, List
-from app.schemas.candidate import CandidateProfileSchema, CandidateProfileUpdate
+from app.schemas.candidate import CandidateProfileSchema, CandidateProfileUpdate, CandidateProcessData
 from app.models.user import CandidateProfileFields
 from app.core.exceptions import NotFoundException
+from datetime import datetime
 
 logger = get_logger(__name__)
 
@@ -47,3 +48,31 @@ class CandidateRepository:
     
     async def delete(self, user_id: str) -> None:
         await self.collection.delete_one({"userId": user_id})
+        
+    async def add_process(self, user_id: str, data: CandidateProcessData) -> str:
+        candidate = await self.find_by_user_id(user_id)
+        if not candidate:
+            raise NotFoundException(f"Candidate profile with userId {user_id} not found")
+        result="Work in progress"
+        new_entry = {
+            "text": data.text,
+            "text_type": data.text_type,
+            "tone": data.tone,
+            "output_type": data.output_type,
+            "output_language": data.output_language,
+            "result": result,
+            "timestamp": datetime.utcnow().isoformat()
+        }
+        process_data=candidate.process or {}
+        idx=str(len(process_data)+1)
+        process_data[idx] = new_entry
+        await self.collection.update_one(
+            {"userId": user_id},
+            {
+                "$set": {
+                    "process": process_data,
+                    "updated_at": datetime.utcnow()
+                }
+            }
+        )
+        return result

@@ -33,6 +33,7 @@ class CandidateProfile(DBModelBase):
     email: EmailStr
     full_name: str
     gender: Optional[Gender] = None
+    process: dict = Field(default_factory=dict, description="Process data for the candidate")
     
 class AuthProfile(DBModelBase):
     userId: str = Field(..., description="Reference to AuthUser.userId")

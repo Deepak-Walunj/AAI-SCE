@@ -1,6 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Request, UploadFile, File, Form
 from app.core.logging import get_logger
-from app.schemas.candidate import CandidateProfileUpdate, CandidateProfileResponse,CandidateProfileRegisterRequest
+from app.schemas.candidate import (
+    CandidateProfileUpdate, 
+    CandidateProfileResponse,
+    CandidateProfileRegisterRequest, 
+    CandidateProcessResponse, 
+    CandidateProcessData,
+    )
 from app.core.enums import EntityType, Gender
 from app.services.candidate import CandidateService
 from app.api.deps import get_candidate_service
@@ -74,4 +80,18 @@ async def delete_my_profile(
     return CandidateProfileResponse(
         success=True,
         message="Profile deleted successfully",
+    )
+    
+@router.post("/process", response_model=CandidateProcessResponse)
+@allowed_entities([EntityType.CANDIDATE])
+async def process_text(
+    request: Request,
+    data: CandidateProcessData,
+    candidate_service: CandidateService = Depends(get_candidate_service)
+):
+    result=await candidate_service.get_process_output(request.state.user.userId, data)
+    return CandidateProcessResponse(
+        success=True,
+        message="Text processed successfully",
+        result=result
     )

@@ -6,7 +6,8 @@ from app.schemas.candidate import (
     CandidateProfileUpdate,
     CandidateProfileRegisterRequest,
     CandidateProfileSchema,
-    FailedRegistration
+    FailedRegistration,
+    CandidateProcessData
 )
 from app.schemas.auth import UserRegisterRequest
 from app.core.enums import EntityType
@@ -69,3 +70,7 @@ class CandidateService:
             await self.auth_service.delete_user_by_userId(user_id)
         else:
             raise NotFoundException(message="Profile not found", details={"user_id": user_id})
+    
+    async def get_process_output(self, user_id: str, data: CandidateProcessData)->str:
+        result=await self.candidate_repository.add_process(user_id, data)
+        return result

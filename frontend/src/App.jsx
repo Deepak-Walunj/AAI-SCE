@@ -4,6 +4,7 @@ import UserRegisterationPage from './components/Landing/UserRegisteration';
 import LoginPage from './components/Landing/Login'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import CandidateDashboard from './components/Candidate/CandidateDashboard';
+import Assistance from './components/Candidate/Assistance';
 import AdminDashboard from './components/Admin/AdminDashboard';
 import PrivateRoute from './components/PrivateRoute';
 import { ToastContainer } from "react-toastify";
@@ -19,6 +20,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/admin/login" element={<LoginPage role='company_admin'/>} />
           <Route path="/candidate/dashboard" element={<PrivateRoute><CandidateDashboard/></PrivateRoute>} />
+          <Route path="/candidate/process" element={<PrivateRoute><Assistance/></PrivateRoute>} />
           <Route path="/admin/dashboard" element={<PrivateRoute><AdminDashboard/></PrivateRoute>} />
         </Routes>
       </Router>

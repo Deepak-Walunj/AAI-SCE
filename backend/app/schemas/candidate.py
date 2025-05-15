@@ -55,3 +55,14 @@ class FailedRegistration(BaseModel):
     email: EmailStr
     error: str
 
+class CandidateProcessResponse(BaseModel):
+    success: bool
+    message: str
+    result: Optional[str] = None
+
+class CandidateProcessData(BaseModel):
+    text: str
+    text_type: str
+    tone: str
+    output_type: str
+    output_language: str
